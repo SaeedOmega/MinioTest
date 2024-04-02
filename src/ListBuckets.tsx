@@ -24,6 +24,14 @@ const ListBuckets = () => {
     refresh()
   }
 
+  const downloadURL = async (name: string) => {
+    const url = await mc.presignedUrl("GET", "test", name)
+    let link = document.createElement("a")
+    link.download = name
+    link.href = url
+    link.click()
+    link.remove()
+  }
   useEffect(() => {
     if (openAddBucket === false) getObjects()
   }, [refreshValue])
@@ -47,7 +55,10 @@ const ListBuckets = () => {
                 <td className="!rounded-2xl items-center flex justify-between border-slate-100 dark:border-slate-700 p-3 pl-8 text-slate-500 dark:text-slate-400">
                   {b.name}
                   <div className="flex basis-[28%] justify-between">
-                    <button className="border border-slate-500 rounded-xl p-2 w-28 text-center hover:bg-slate-700 transition-colors duration-300">
+                    <button
+                      onClick={() => downloadURL(b.name)}
+                      className="border border-slate-500 rounded-xl p-2 w-28 text-center hover:bg-slate-700 transition-colors duration-300"
+                    >
                       Download
                     </button>
                     <button
