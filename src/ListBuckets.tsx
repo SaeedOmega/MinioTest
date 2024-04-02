@@ -1,61 +1,63 @@
 import React, { useEffect, useState } from "react"
 import mc from "./utils/mc"
-import { BucketItemFromList } from "minio"
+import useStore from "./stores/store"
 
 const ListBuckets = () => {
-  const [buckets, setBuckets] = useState<BucketItemFromList[]>([])
-
-  const getBuckets = async () => {
-    const res = await mc.listBuckets()
-    setBuckets(res)
+  const [buckets, setBuckets] = useState<any[]>()
+  const { openAddBucket, refreshValue, refresh } = useStore()
+  const getObjects = async () => {
+    const res = await mc.listObjects("test")
+    const data: any[] = []
+    res.on("data", (obj) => {
+      data.push(obj)
+    })
+    res.on("end", () => {
+      setBuckets(data)
+    })
+    res.on("error", (err) => {
+      console.log(err)
+    })
   }
 
-  const listFirstBucketObject = () => {
-    if (buckets.length) {
-      const objectsStream = mc.listObjects(buckets[0].name, "", true)
-      objectsStream.on("data", async (chunk) => {
-        console.log(chunk)
-      })
-
-      objectsStream.on("error", (err) => {})
-      objectsStream.on("end", () => {})
-    }
+  const deleteObjects = (fileName: string) => {
+    mc.removeObject("test", fileName)
+    refresh()
   }
 
   useEffect(() => {
-    getBuckets()
-  }, [])
-
-  useEffect(() => {
-    if (buckets.length) {
-      listFirstBucketObject()
-    }
-  }, [buckets])
-
+    if (openAddBucket === false) getObjects()
+  }, [refreshValue])
   return (
     <>
-      <table className="table-auto border-collapse w-full text-sm">
+      <table className="table-auto w-full text-sm">
         <thead>
           <tr>
-            <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
+            <th className=" dark:border-slate-600 font-medium p-4 pl-8 pb-3 text-slate-200 dark:text-slate-400 text-left">
               Bucket Name
-            </th>
-            <th className="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-              Actions
             </th>
           </tr>
         </thead>
         <tbody>
-          {buckets.map((b) => {
+          {buckets?.map((b) => {
             return (
               <tr
                 key={b.name}
-                className="bg-white dark:bg-slate-800 rounded-xl"
+                className="bg-white dark:bg-slate-800"
               >
-                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                <td className="!rounded-2xl items-center flex justify-between border-slate-100 dark:border-slate-700 p-3 pl-8 text-slate-500 dark:text-slate-400">
                   {b.name}
+                  <div className="flex basis-[28%] justify-between">
+                    <button className="border border-slate-500 rounded-xl p-2 w-28 text-center hover:bg-slate-700 transition-colors duration-300">
+                      Download
+                    </button>
+                    <button
+                      onClick={() => deleteObjects(b.name)}
+                      className="border border-slate-500 rounded-xl p-2 w-28 text-center hover:bg-slate-700 transition-colors duration-300"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
-                <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400"></td>
               </tr>
             )
           })}
