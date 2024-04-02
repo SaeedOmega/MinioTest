@@ -1,17 +1,28 @@
-import React from "react"
+import AddBucket from "./AddBucket"
+import "./App.css"
+import ListBuckets from "./ListBuckets"
+import useStore from "./stores/store"
 
-import './App.css'
-import ListBuckets from "./ListBuckets";
 function App() {
-
+  const { setOpenAddBucket, openAddBucket } = useStore()
   return (
-    <div className="flex flex-col p-5">
-
-        <h2>List of Buckets</h2>
-        <div className="mt-5">
-        <ListBuckets />
+    <>
+      {openAddBucket && <AddBucket />}
+      <div className="flex flex-col p-5 select-none">
+        <div className="flex">
+          <h2 className="p-2">List of Buckets</h2>
+          <h2
+            onClick={() => setOpenAddBucket(true)}
+            className="ml-5 border border-black p-2 rounded-xl cursor-pointer hover:bg-slate-500 transition-colors duration-300 hover:text-white"
+          >
+            + Add a Bucket
+          </h2>
         </div>
-    </div>
+        <div className="mt-5">
+          <ListBuckets />
+        </div>
+      </div>
+    </>
   )
 }
 
