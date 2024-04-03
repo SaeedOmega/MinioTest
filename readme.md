@@ -11,8 +11,8 @@ run WebUI with ' make run-ui '
 
 <h4>3.Managment:</h4>
 
-for management minio server you should open borwser and go to 'http://localhost:9001'
-username: minioadmin
+for management minio server you should open borwser and go to 'http://localhost:9001' <br/>
+username: minioadmin <br/>
 password: minioadmin
 
 for use webUI go to 'http://localhost:5173'
