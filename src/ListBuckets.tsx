@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import mc from "./utils/mc"
 import useStore from "./stores/store"
+import axios from "axios"
+import fileDownload from "js-file-download"
 
 const ListBuckets = () => {
   const [buckets, setBuckets] = useState<any[]>()
@@ -26,11 +28,7 @@ const ListBuckets = () => {
 
   const downloadURL = async (name: string) => {
     const url = await mc.presignedUrl("GET", "test", name)
-    let link = document.createElement("a")
-    link.download = name
-    link.href = url
-    link.click()
-    link.remove()
+    fileDownload((await axios.get(url)).data, name)
   }
   useEffect(() => {
     if (openAddBucket === false) getObjects()
