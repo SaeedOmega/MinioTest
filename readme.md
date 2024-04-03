@@ -1,15 +1,20 @@
 <h1>Hello</h1>
 
-<h4>1.first you need minio server and run it:</h4>
+<h4>1.Initlizaing:</h4>
 
-<p>with this link you can start your minio server</p>
+install dependencies with run ' make install '
 
-<a href="https://min.io/docs/minio/linux/index.html">Minio Docs</a>
+<h4>2.Run Projects:</h4>
 
-<p>in next you should open minio webui and create a bucket.</p>
+run minio server with ' make run-minio '
+run WebUI with ' make run-ui '
 
-<h4>2.run this reactUI:</h4>
+<h4>3.Managment:</h4>
 
-<p>run ' npm i ' and ' npm run dev '</p>
+for management minio server you should open borwser and go to 'http://localhost:9001'
+username: minioadmin
+password: minioadmin
+
+for use webUI go to 'http://localhost:5173'
 
 <h3>So you can enjoy!</h3>

@@ -41,7 +41,7 @@ const ListBuckets = () => {
         <thead>
           <tr>
             <th className=" dark:border-slate-600 font-medium p-4 pl-8 pb-3 text-slate-200 dark:text-slate-400 text-left">
-              Bucket Name
+              File Name
             </th>
           </tr>
         </thead>
