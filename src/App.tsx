@@ -1,5 +1,5 @@
 import AddObjects from "./AddObjects"
-import ListBuckets from "./ListBuckets"
+import ListBuckets from "./ListFiless"
 import useStore from "./stores/store"
 
 function App() {
@@ -8,11 +8,14 @@ function App() {
     <>
       {openAddBucket && <AddObjects />}
       <div className="flex flex-col p-5 select-none">
-        <div className="flex">
-          <h2 className="p-2">List of Buckets</h2>
+        <div className="flex items-center">
+          <div className="flex flex-col p-2">
+            <h2>List of Files</h2>
+            <p className="text-[12px] font-light">Bucket Name: test</p>
+          </div>
           <h2
             onClick={() => setOpenAddBucket(true)}
-            className="ml-5 border border-black p-2 rounded-xl cursor-pointer hover:bg-slate-500 transition-colors duration-300 hover:text-white"
+            className="ml-5 border h-fit border-black p-2 rounded-xl cursor-pointer hover:bg-slate-500 transition-colors duration-300 hover:text-white"
           >
             + Add a File
           </h2>
