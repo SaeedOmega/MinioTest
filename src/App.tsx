@@ -1,9 +1,27 @@
+import { useEffect, useState } from "react"
 import AddObjects from "./AddObjects"
 import ListBuckets from "./ListFiless"
 import useStore from "./stores/store"
+import mc from "./utils/mc"
 
 function App() {
   const { setOpenAddBucket, openAddBucket } = useStore()
+  useEffect(() => {
+    mc.bucketExists("test", function (err, exists) {
+      if (err) {
+        return console.log(err)
+      }
+      if (!exists) {
+        mc.makeBucket("test", "us-east-1", function (err) {
+          if (err) return console.log("Error creating bucket.", err)
+          console.log('Bucket created successfully in "us-east-1".')
+          location.reload()
+        })
+      }
+      return console.log("Bucket exists.")
+    })
+  }, [])
+
   return (
     <>
       {openAddBucket && <AddObjects />}
