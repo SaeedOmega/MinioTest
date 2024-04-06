@@ -3,6 +3,7 @@ import AddObjects from "./AddObjects"
 import ListBuckets from "./ListFiless"
 import useStore from "./stores/store"
 import mc from "./utils/mc"
+import axios from "axios"
 
 function App() {
   const { setOpenAddBucket, openAddBucket } = useStore()
@@ -20,6 +21,25 @@ function App() {
       }
       return console.log("Bucket exists.")
     })
+    axios
+      .get("http://localhost:8200/v1/secret/data/test", {
+        headers: {
+          "x-vault-token": "test-vault",
+        },
+      })
+      .catch((error) => {
+        if (error.message.includes("404")) {
+          axios
+            .post(
+              "http://127.0.0.1:8200/v1/secret/data/test",
+              { data: {} },
+              { headers: { "x-vault-token": "test-vault" } }
+            )
+            .then(() => {
+              location.reload()
+            })
+        }
+      })
   }, [])
 
   return (

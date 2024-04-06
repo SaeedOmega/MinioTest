@@ -1,24 +1,30 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import mc from "./utils/mc"
 import useStore from "./stores/store"
 import axios from "axios"
 import fileDownload from "js-file-download"
 
 const ListBuckets = () => {
-  const [buckets, setBuckets] = useState<any[]>()
+  const [buckets, setBuckets] = useState<{ name: string }[]>()
   const { openAddBucket, refreshValue, refresh } = useStore()
   const getObjects = async () => {
-    const res = await mc.listObjects("test")
-    const data: any[] = []
-    res.on("data", (obj) => {
-      data.push(obj)
+    const res = await axios.get("http://localhost:8200/v1/secret/data/test", {
+      headers: {
+        "x-vault-token": "test-vault",
+      },
     })
-    res.on("end", () => {
-      setBuckets(data)
-    })
-    res.on("error", (err) => {
-      console.log(err)
-    })
+    const data: { name: string }[] = []
+    if (res.data.data.data.data) {
+      let array = Object.entries(res.data.data.data.data)
+
+      for (let index = 0; index < array.length; index++) {
+        data.push({
+          //@ts-ignore
+          name: array[index][1],
+        })
+      }
+    }
+    setBuckets(data)
   }
 
   const deleteObjects = (fileName: string) => {

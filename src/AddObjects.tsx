@@ -2,10 +2,10 @@ import { useState } from "react"
 import useStore from "./stores/store"
 import mc from "./utils/mc"
 import { Buffer } from "buffer"
-import { createReadStream } from "fs"
+import axios from "axios"
 
 const AddObjects = () => {
-  const { setOpenAddBucket, refresh } = useStore()
+  const { setOpenAddBucket, refresh, increaseItem, countItems } = useStore()
   const [file, setFile] = useState<File | null>()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -33,24 +33,30 @@ const AddObjects = () => {
       fileBuffer.onerror = function (error) {
         console.log("Error: ", error)
       }
+      let key = file.name.split(".")[0]
+      const oldData = await axios.get(
+        "http://localhost:8200/v1/secret/data/test",
+        {
+          headers: {
+            "x-vault-token": "test-vault",
+          },
+        }
+      )
+      axios.post(
+        "http://localhost:8200/v1/secret/data/test",
+        JSON.stringify({
+          data: { data: { ...oldData.data.data.data.data, [key]: file.name } },
+        }),
+        {
+          headers: {
+            "x-vault-token": "test-vault",
+            "Content-Type": "application/json",
+          },
+        }
+      )
     }
   }
 
-  // const addObjects = async () => {
-  //   const uploadedFile = file
-  //   if (uploadedFile) {
-  //     const buf = await uploadedFile.stream().getReader().read()
-  //     console.log(buf)
-  //     // setLoading(true)
-  //     mc.putObject("test", uploadedFile.name, buf, (err) => {
-  //       if (err) {
-  //         return setError(err.message)
-  //       }
-  //       setLoading(false)
-  //       setOpenAddBucket(false)
-  //     })
-  //   }
-  // }
   return (
     <div
       onClick={(event) => setOpenAddBucket(false)}
