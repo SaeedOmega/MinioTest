@@ -9,6 +9,11 @@ run-minio:
 run-ui:
 	npm run dev
 
+run-vault:
+	docker run -d --rm --name vault-server --network host --cap-add=IPC_LOCK -e 'VAULT_DEV_ROOT_TOKEN_ID=test-vault' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' vault:1.13.3
+stop-vault:
+	docker stop vault-server
+
 install-minio:
 	mkdir ~/minio
 
