@@ -1,10 +1,12 @@
 import { useState } from "react"
-import useStore from "../stores/store"
-import mc from "../utils/mc"
+import useStore from "../../stores/store"
+import mc from "../../utils/mc"
 import { Buffer } from "buffer"
+import useMinio from "../../stores/minio"
 
 const AddObjects = () => {
-  const { setOpenAddBucket, refresh, increaseItem, countItems } = useStore()
+  const { refresh } = useStore()
+  const { setOpenAddBucket } = useMinio()
   const [file, setFile] = useState<File | null>()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)

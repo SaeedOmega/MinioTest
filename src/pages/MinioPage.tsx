@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import AddObjects from "../components/AddObjects"
-import ListBuckets from "../components/ListFiless"
+import AddObjects from "../components/minio/AddObjects"
+import ListBuckets from "../components/minio/ListFiless"
 import useStore from "../stores/store"
 import mc from "../utils/mc"
 

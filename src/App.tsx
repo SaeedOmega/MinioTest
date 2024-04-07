@@ -1,6 +1,7 @@
 import { Routes, Route, Link, Navigate } from "react-router-dom"
 import MinioPage from "./pages/MinioPage"
 import useStore from "./stores/store"
+import VaultPage from "./pages/VaultPage"
 
 const App = () => {
   const { setPage, wichPage } = useStore()
@@ -50,7 +51,10 @@ const App = () => {
             id="minio"
             element={<MinioPage />}
           />
-          {/* <Route path="vault" element={} /> */}
+          <Route
+            path="vault"
+            element={<VaultPage />}
+          />
         </Routes>
       </div>
     </>

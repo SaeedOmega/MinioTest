@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
-import mc from "../utils/mc"
-import useStore from "../stores/store"
+import mc from "../../utils/mc"
+import useStore from "../../stores/store"
 import axios from "axios"
 import fileDownload from "js-file-download"
+import useMinio from "../../stores/minio"
 
 const ListBuckets = () => {
   const [buckets, setBuckets] = useState<any[]>()
-  const { openAddBucket, refreshValue, refresh } = useStore()
+  const { refreshValue, refresh } = useStore()
+  const { openAddBucket } = useMinio()
   const getObjects = async () => {
     const data: any[] = []
     let stream = mc.listObjects("test", "", true)
@@ -38,7 +40,7 @@ const ListBuckets = () => {
       <table className="table-auto w-full text-sm">
         <thead>
           <tr>
-            <th className=" dark:border-slate-600 font-medium p-4 pl-8 pb-3 text-slate-200 dark:text-slate-400 text-left">
+            <th className=" border-slate-600 font-medium p-4 pl-8 pb-3 text-slate-400 text-left">
               File Name
             </th>
           </tr>
@@ -48,9 +50,9 @@ const ListBuckets = () => {
             return (
               <tr
                 key={b.name}
-                className="bg-white dark:bg-slate-800"
+                className="bg-slate-800"
               >
-                <td className="!rounded-2xl items-center flex justify-between border-slate-100 dark:border-slate-700 p-3 pl-8 text-slate-500 dark:text-slate-400">
+                <td className="!rounded-2xl items-center flex justify-between border-slate-100 p-3 pl-8 text-slate-400">
                   {b.name}
                   <div className="flex">
                     <button
