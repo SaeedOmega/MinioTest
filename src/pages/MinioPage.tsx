@@ -25,7 +25,7 @@ function MinioPage() {
   return (
     <>
       {openAddBucket && <AddObjects />}
-      <div className="flex flex-col p-5 select-none min-h-screen">
+      <div className="flex flex-col p-5 select-none">
         <div className="flex items-center">
           <div className="flex flex-col p-2">
             <h2>List of Files</h2>

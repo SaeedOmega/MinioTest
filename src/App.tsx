@@ -34,7 +34,7 @@ const App = () => {
           Vault Project
         </Link>
       </div>
-      <div className="border mx-2 rounded-lg select-none z-10 border-slate-800">
+      <div className="border h-[90vh] overflow-y-auto mx-2 rounded-lg select-none z-10 border-slate-800">
         <Routes>
           <Route
             path="/"
