@@ -1,8 +1,7 @@
 import { useState } from "react"
-import useStore from "./stores/store"
-import mc from "./utils/mc"
+import useStore from "../stores/store"
+import mc from "../utils/mc"
 import { Buffer } from "buffer"
-import axios from "axios"
 
 const AddObjects = () => {
   const { setOpenAddBucket, refresh, increaseItem, countItems } = useStore()
@@ -18,7 +17,6 @@ const AddObjects = () => {
 
       fileBuffer.onload = async function () {
         const buf = Buffer.from(await file.arrayBuffer())
-        // Replace "hello" with your bucket name and "FileName" with your desired file name
         await mc.putObject("test", file.name, buf, function (err, etag) {
           if (err) {
             setError(err.message)
@@ -33,34 +31,13 @@ const AddObjects = () => {
       fileBuffer.onerror = function (error) {
         console.log("Error: ", error)
       }
-      let key = file.name.split(".")[0]
-      const oldData = await axios.get(
-        "http://localhost:8200/v1/secret/data/test",
-        {
-          headers: {
-            "x-vault-token": "test-vault",
-          },
-        }
-      )
-      axios.post(
-        "http://localhost:8200/v1/secret/data/test",
-        JSON.stringify({
-          data: { data: { ...oldData.data.data.data.data, [key]: file.name } },
-        }),
-        {
-          headers: {
-            "x-vault-token": "test-vault",
-            "Content-Type": "application/json",
-          },
-        }
-      )
     }
   }
 
   return (
     <div
       onClick={(event) => setOpenAddBucket(false)}
-      className="w-screen h-screen select-none backdrop-blur-sm flex justify-center items-center absolute"
+      className="w-screen z-30 h-screen select-none backdrop-blur-sm flex justify-center items-center absolute"
     >
       <div
         onClick={(event) => {

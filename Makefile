@@ -11,6 +11,14 @@ run-ui:
 
 run-vault:
 	docker run -d --rm --name vault-server --network host --cap-add=IPC_LOCK -e 'VAULT_DEV_ROOT_TOKEN_ID=test-vault' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200' vault:1.13.3
+	
+set-vaultConfig:
+	curl \
+    	--header "X-Vault-Token: test-vault" \
+    	--request POST \
+    	--data @corsSettingVault.json \
+    	http://localhost:8200/v1/sys/config/cors
+
 stop-vault:
 	docker stop vault-server
 

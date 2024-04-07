@@ -1,66 +1,57 @@
-import { useEffect, useState } from "react"
-import AddObjects from "./AddObjects"
-import ListBuckets from "./ListFiless"
+import { Routes, Route, Link, Navigate } from "react-router-dom"
+import MinioPage from "./pages/MinioPage"
 import useStore from "./stores/store"
-import mc from "./utils/mc"
-import axios from "axios"
 
-function App() {
-  const { setOpenAddBucket, openAddBucket } = useStore()
-  useEffect(() => {
-    mc.bucketExists("test", function (err, exists) {
-      if (err) {
-        return console.log(err)
-      }
-      if (!exists) {
-        mc.makeBucket("test", "us-east-1", function (err) {
-          if (err) return console.log("Error creating bucket.", err)
-          console.log('Bucket created successfully in "us-east-1".')
-          location.reload()
-        })
-      }
-      return console.log("Bucket exists.")
-    })
-    axios
-      .get("http://localhost:8200/v1/secret/data/test", {
-        headers: {
-          "x-vault-token": "test-vault",
-        },
-      })
-      .catch((error) => {
-        if (error.message.includes("404")) {
-          axios
-            .post(
-              "http://127.0.0.1:8200/v1/secret/data/test",
-              { data: {} },
-              { headers: { "x-vault-token": "test-vault" } }
-            )
-            .then(() => {
-              location.reload()
-            })
-        }
-      })
-  }, [])
-
+const App = () => {
+  const { setPage, wichPage } = useStore()
   return (
     <>
-      {openAddBucket && <AddObjects />}
-      <div className="flex flex-col p-5 select-none">
-        <div className="flex items-center">
-          <div className="flex flex-col p-2">
-            <h2>List of Files</h2>
-            <p className="text-[12px] font-light">Bucket Name: test</p>
-          </div>
-          <h2
-            onClick={() => setOpenAddBucket(true)}
-            className="ml-5 border h-fit border-black p-2 rounded-xl cursor-pointer hover:bg-slate-500 transition-colors duration-300 hover:text-white"
-          >
-            + Add a File
-          </h2>
-        </div>
-        <div className="mt-5">
-          <ListBuckets />
-        </div>
+      <div className="flex m-5 mb-0 select-none">
+        <Link
+          to="/minio"
+          onClick={() => {
+            if (wichPage !== "minio") setPage("minio")
+          }}
+          className={`${
+            wichPage !== "minio"
+              ? " hover:bg-slate-200 !cursor-pointer"
+              : "z-20 bottom-[-1px]"
+          } p-5 cursor-default transition-all duration-200 relative  bg-white border border-b-0 border-slate-900 rounded-t-2xl mr-5`}
+        >
+          Minio Project
+        </Link>
+        <Link
+          to="/vault"
+          onClick={() => {
+            if (wichPage !== "vault") setPage("vault")
+          }}
+          className={`${
+            wichPage !== "vault"
+              ? " hover:bg-slate-200 !cursor-pointer"
+              : "z-20 bottom-[-1px]"
+          } p-5 cursor-default transition-all duration-200 relative  bg-white border border-b-0 border-slate-900 rounded-t-2xl mr-5`}
+        >
+          Vault Project
+        </Link>
+      </div>
+      <div className="border mx-2 rounded-lg select-none z-10 border-slate-800">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to="/minio"
+                replace={true}
+              />
+            }
+          />
+          <Route
+            path="/minio"
+            id="minio"
+            element={<MinioPage />}
+          />
+          {/* <Route path="vault" element={} /> */}
+        </Routes>
       </div>
     </>
   )

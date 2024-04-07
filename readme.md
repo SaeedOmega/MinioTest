@@ -9,7 +9,12 @@ install dependencies with run ' make install '
 run minio server with ' make run-minio '
 run WebUI with ' make run-ui '
 
-<h4>3.Managment:</h4>
+<h4>3.Run and set Config Vault</h4>
+
+run vault server with ' make run-vault '
+and set config with ' make set-vaultConfig '
+
+<h4>4.Managment:</h4>
 
 for management minio server you should open borwser and go to 'http://localhost:9001' <br/>
 username: minioadmin <br/>
