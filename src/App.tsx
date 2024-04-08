@@ -2,12 +2,20 @@ import { Routes, Route, Link, Navigate } from "react-router-dom"
 import MinioPage from "./pages/MinioPage"
 import useStore from "./stores/store"
 import VaultPage from "./pages/VaultPage"
+import useMinio from "./stores/minio"
+import AddFile from "./components/minio/AddFile"
+import useVault from "./stores/vault"
+import AddObjects from "./components/vault/AddObjects"
 
 const App = () => {
   const { setPage, wichPage } = useStore()
+  const { openAddBucket } = useMinio()
+  const { openAddSecret } = useVault()
   return (
     <>
-      <div className="flex m-5 mb-0 select-none">
+      {openAddBucket && <AddFile />}
+      {openAddSecret && <AddObjects />}
+      <div className="flex mx-5 mt-5 select-none">
         <Link
           to="/minio"
           onClick={() => {
@@ -47,8 +55,7 @@ const App = () => {
             }
           />
           <Route
-            path="/minio"
-            id="minio"
+            path="minio"
             element={<MinioPage />}
           />
           <Route

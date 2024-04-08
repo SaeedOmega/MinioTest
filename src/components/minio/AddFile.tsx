@@ -4,7 +4,7 @@ import mc from "../../utils/mc"
 import { Buffer } from "buffer"
 import useMinio from "../../stores/minio"
 
-const AddObjects = () => {
+const AddFile = () => {
   const { refresh } = useStore()
   const { setOpenAddBucket } = useMinio()
   const [file, setFile] = useState<File | null>()
@@ -39,7 +39,7 @@ const AddObjects = () => {
   return (
     <div
       onClick={(event) => setOpenAddBucket(false)}
-      className="w-screen z-30 h-screen select-none backdrop-blur-sm flex justify-center items-center absolute"
+      className="w-screen z-30 select-none backdrop-blur-sm flex justify-center items-center fixed top-0 bottom-0"
     >
       <div
         onClick={(event) => {
@@ -47,7 +47,7 @@ const AddObjects = () => {
         }}
         className="bg-slate-800 p-10 flex flex-col items-center text-white rounded-2xl"
       >
-        <h1 className="text-3xl mb-10">Add Bucket</h1>
+        <h1 className="text-3xl mb-10">Add File</h1>
         <input
           type="file"
           className="mb-10"
@@ -84,4 +84,4 @@ const AddObjects = () => {
   )
 }
 
-export default AddObjects
+export default AddFile

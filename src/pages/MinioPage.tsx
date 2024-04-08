@@ -1,11 +1,12 @@
 import { useEffect } from "react"
-import AddObjects from "../components/minio/AddObjects"
+import AddFile from "../components/minio/AddFile"
 import ListBuckets from "../components/minio/ListFiless"
 import useStore from "../stores/store"
 import mc from "../utils/mc"
+import useMinio from "../stores/minio"
 
 function MinioPage() {
-  const { setOpenAddBucket, openAddBucket } = useStore()
+  const { setOpenAddBucket, openAddBucket } = useMinio()
   useEffect(() => {
     mc.bucketExists("test", function (err, exists) {
       if (err) {
@@ -24,7 +25,6 @@ function MinioPage() {
 
   return (
     <>
-      {openAddBucket && <AddObjects />}
       <div className="flex flex-col p-5 select-none">
         <div className="flex items-center">
           <div className="flex flex-col p-2">

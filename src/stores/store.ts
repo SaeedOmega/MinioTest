@@ -9,7 +9,7 @@ type Store = {
 
 const useStore = create<Store>()((set) => ({
   refreshValue: 0,
-  wichPage: "minio",
+  wichPage: location.pathname.includes("vault") ? "vault" : "minio",
   setPage: (page: string) => set(() => ({ wichPage: page })),
   refresh: () => set((state) => ({ refreshValue: state.refreshValue + 1 })),
 }))
