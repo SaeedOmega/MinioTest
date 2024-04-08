@@ -28,7 +28,7 @@ export const Post = async (resultObject: {}, name: string) => {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        `http://localhost:8200/v1/secret/data/${name}`,
+        `http://localhost:8200/v1/secret/data${name}`,
         JSON.stringify(resultObject),
         {
           headers: {
@@ -70,15 +70,31 @@ export const Put = async (resultObject: {}, name: string) => {
 /**
  * LIST secrets in vault
  */
-export const List = async () => {
+export const List = async (directoryName: string): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     axios({
       headers: {
         "x-vault-token": "test-vault",
       },
-      baseURL: "http://localhost:8200/v1/secret/metadata/",
+      baseURL: `http://localhost:8200/v1/secret/metadata${directoryName}`,
       method: "LIST",
     })
+      .then((res) => resolve(res.data.data.keys))
+      .catch((err) => reject(err))
+  })
+}
+
+/**
+ * DELETE object in vault
+ */
+export const Delete = async (directoryName: string) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(`http://localhost:8200/v1/secret/metadata${directoryName}`, {
+        headers: {
+          "x-vault-token": "test-vault",
+        },
+      })
       .then((res) => resolve(res))
       .catch((err) => reject(err))
   })

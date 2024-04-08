@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import useVault from "../../stores/vault"
 import Input from "../Input"
 import { EditVaultObject, GetKeyValues } from "../../repository/vault"
+import useStore from "../../stores/store"
 
 const EditObject = () => {
   const {
@@ -17,6 +18,7 @@ const EditObject = () => {
   const [error, setError] = useState("")
   // loading state
   const [loading, setLoading] = useState(false)
+  const { setErrorMessage } = useStore()
 
   useEffect(() => {
     const arr: { key: string; value: string }[] = []
@@ -28,7 +30,7 @@ const EditObject = () => {
         }
         setItems(arr)
       },
-      (err) => console.log(err)
+      (err) => setErrorMessage(err.message)
     )
   }, [])
 
@@ -54,7 +56,10 @@ const EditObject = () => {
   }
   return (
     <div
-      onClick={(event) => selectItem("")}
+      onClick={(event) => {
+        setItems([{ key: "", value: "" }])
+        selectItem("")
+      }}
       className="w-screen z-30 select-none backdrop-blur-sm flex justify-center items-center fixed top-0 bottom-0"
     >
       <div
@@ -120,7 +125,10 @@ const EditObject = () => {
               Edit
             </button>
             <button
-              onClick={(event) => selectItem("")}
+              onClick={(event) => {
+                setItems([{ key: "", value: "" }])
+                selectItem("")
+              }}
               className="ml-5 hover:bg-slate-600 transition-colors duration-300 rounded-xl border border-white px-2 py-1 w-28"
             >
               Cancel

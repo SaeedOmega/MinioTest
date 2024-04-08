@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useVault from "../../stores/vault"
 import Input from "../Input"
 import useStore from "../../stores/store"
@@ -11,7 +11,7 @@ const AddObjects = () => {
     increaseItems,
     editItems,
     deleteItem,
-    setItems: sentItems,
+    setItems,
   } = useVault()
   const { refresh } = useStore()
   // for input name
@@ -30,7 +30,7 @@ const AddObjects = () => {
       items,
       name,
       () => {
-        sentItems([{ key: "", value: "" }])
+        setItems([{ key: "", value: "" }])
         setName("")
         refresh()
       },
@@ -60,8 +60,8 @@ const AddObjects = () => {
           }}
           value={name}
           name="objectName"
-          label="Object Name"
-          placeholder="like Saeed"
+          label="Path or Name"
+          placeholder="like Saeed or qwe/Saeed"
           className=""
         />
         <div
@@ -84,8 +84,6 @@ const AddObjects = () => {
                 }}
                 value={item}
                 indexItem={index + 1}
-                name="objectName"
-                label="Object Name"
                 placeholder="like Saeed"
               />
               <button
@@ -99,12 +97,12 @@ const AddObjects = () => {
         </div>
         <button
           onClick={() => increaseItems()}
-          className="border border-white w-full mt-5 py-0.5 hover:bg-slate-400 hover:text-slate-800 rounded-lg transition-colors duration-250"
+          className="border border-white w-full mb-10 mt-5 py-0.5 hover:bg-slate-400 hover:text-slate-800 rounded-lg transition-colors duration-250"
         >
           + Add Item
         </button>
         {error && (
-          <div className="rounded-xl px-2 py-1 mb-5">
+          <div className="rounded-xl mb-3 text-center px-2 py-1 ">
             {error.message}
             <br /> Try Again!
           </div>
@@ -112,7 +110,7 @@ const AddObjects = () => {
         {loading ? (
           <div className="rounded-xl px-2 py-1">Loading...</div>
         ) : (
-          <div className="flex mt-10">
+          <div className="flex">
             <button
               onClick={done}
               className="rounded-xl hover:bg-slate-600 transition-colors duration-300 border border-white px-2 py-1 w-28"

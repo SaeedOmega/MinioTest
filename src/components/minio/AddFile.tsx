@@ -65,7 +65,7 @@ const AddFile = () => {
           }}
         />
         {error && (
-          <div className="rounded-xl px-2 py-1 mb-5">
+          <div className="rounded-xl text-center px-2 py-1 mb-5">
             {error}
             <br /> Try Again!
           </div>

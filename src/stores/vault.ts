@@ -2,6 +2,10 @@ import { create } from "zustand"
 
 type Vault = {
   /**
+   * path of page
+   */
+  path: string
+  /**
    * state for open add secret for vault or not
    */
   openAddSecret: boolean
@@ -51,12 +55,18 @@ type Vault = {
    * @param state boolean
    */
   setOpenAddSecret: (state: boolean) => void
+  /**
+   * a function for set Path
+   */
+  refreshPath: () => void
 }
 
 const useVault = create<Vault>()((set) => ({
+  path: location.pathname.replace("vault", "Home"),
   openAddSecret: false,
   items: [{ key: "", value: "" }],
   selectedItem: "",
+  refreshPath: () => set({ path: location.pathname.replace("vault", "Home") }),
   selectItem: (name) => set(() => ({ selectedItem: name })),
   setItems: (state) => set(() => ({ items: state })),
   deleteItem: (index) =>

@@ -6,11 +6,11 @@ type Props = {
   /**
    * name of input for set id
    */
-  name: string
+  name?: string
   /**
    * a string for show as label of input
    */
-  label: string
+  label?: string
   /**
    * a string for show placeholder
    */
