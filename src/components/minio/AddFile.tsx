@@ -45,7 +45,7 @@ const AddFile = () => {
         onClick={(event) => {
           event.stopPropagation()
         }}
-        className="bg-slate-800 p-10 flex flex-col items-center text-white rounded-2xl"
+        className="bg-slate-900 p-10 flex flex-col items-center text-white rounded-2xl"
       >
         <h1 className="text-3xl mb-10">Add File</h1>
         <input

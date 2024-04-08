@@ -6,7 +6,7 @@ import useVault from "../../stores/vault"
 const ListSecrets = () => {
   const [objects, setObjects] = useState<string[]>([])
   const { refresh, refreshValue } = useStore()
-  const { setEditSecret } = useVault()
+  const { selectItem } = useVault()
   useEffect(() => {
     axios({
       headers: {
@@ -33,7 +33,9 @@ const ListSecrets = () => {
           {objects?.map((b) => {
             return (
               <tr
-                onClick={() => setEditSecret(true)}
+                onClick={() => {
+                  selectItem(b)
+                }}
                 key={b}
                 className="cursor-pointer transition-colors duration-250 bg-slate-800 hover:bg-slate-300 "
               >

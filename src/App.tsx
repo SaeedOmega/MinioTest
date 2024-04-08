@@ -6,15 +6,17 @@ import useMinio from "./stores/minio"
 import AddFile from "./components/minio/AddFile"
 import useVault from "./stores/vault"
 import AddObjects from "./components/vault/AddObjects"
+import EditObject from "./components/vault/EditObject"
 
 const App = () => {
   const { setPage, wichPage } = useStore()
   const { openAddBucket } = useMinio()
-  const { openAddSecret } = useVault()
+  const { openAddSecret, selectedItem } = useVault()
   return (
     <>
       {openAddBucket && <AddFile />}
       {openAddSecret && <AddObjects />}
+      {selectedItem && <EditObject />}
       <div className="flex mx-5 mt-5 select-none">
         <Link
           to="/minio"

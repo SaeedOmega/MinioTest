@@ -20,10 +20,10 @@ const Input = ({
   return (
     <>
       {typeof value === "string" && (
-        <div className={`${className} flex w-[96.5%] bg-slate-800 flex-col`}>
+        <div className={`${className} flex w-[96.5%] bg-slate-900 flex-col`}>
           <label
             htmlFor={name}
-            className="bg-slate-800 relative bottom-[-10px] px-1 left-2 w-fit"
+            className="bg-slate-900 relative bottom-[-10px] px-1 left-2 w-fit"
           >
             {label} :
           </label>
@@ -33,16 +33,16 @@ const Input = ({
             type="text"
             id={name}
             placeholder={placeholder}
-            className="bg-slate-800 placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
+            className="bg-slate-900 placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
           />
         </div>
       )}
       {typeof value !== "string" && (
         <div className={`${className} flex justify-between w-60`}>
-          <div className="flex basis-[48%] bg-slate-800 flex-col">
+          <div className="flex basis-[48%] bg-slate-900 flex-col">
             <label
               htmlFor={`key${item}`}
-              className="bg-slate-800 relative bottom-[-10px] px-1 left-2 w-fit"
+              className="bg-slate-900 relative bottom-[-10px] px-1 left-2 w-fit"
             >
               Key :
             </label>
@@ -52,13 +52,13 @@ const Input = ({
               type="text"
               id={`key${item}`}
               placeholder="key"
-              className="bg-slate-800 w-full placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
+              className="bg-slate-900 w-full placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
             />
           </div>
-          <div className="basis-[48%] flex bg-slate-800 flex-col">
+          <div className="basis-[48%] flex bg-slate-900 flex-col">
             <label
               htmlFor={`value${item}`}
-              className="bg-slate-800 relative bottom-[-10px] px-1 left-2 w-fit"
+              className="bg-slate-900 relative bottom-[-10px] px-1 left-2 w-fit"
             >
               Value :
             </label>
@@ -68,7 +68,7 @@ const Input = ({
               type="text"
               id={`value${item}`}
               placeholder="value"
-              className="bg-slate-800 w-full placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
+              className="bg-slate-900 w-full placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
             />
           </div>
         </div>

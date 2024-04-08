@@ -1,24 +1,38 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useVault from "../../stores/vault"
-import Input from "../Input"
 import axios from "axios"
-import useStore from "../../stores/store"
+import Input from "../Input"
 
-const AddObjects = () => {
+const EditObject = () => {
   const {
-    setOpenAddSecret,
-    items,
+    selectItem,
+    selectedItem,
     increaseItems,
+    items,
+    setItems,
     editItems,
     deleteItem,
-    setItems: sentItems,
   } = useVault()
-  const { refresh } = useStore()
-  const [name, setName] = useState<string>("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const done = () => {
+  useEffect(() => {
+    const arr: { key: string; value: string }[] = []
+    axios
+      .get(`http://localhost:8200/v1/secret/data/${selectedItem}`, {
+        headers: {
+          "x-vault-token": "test-vault",
+        },
+      })
+      .then((res) => {
+        for (const keyy in res.data.data.data) {
+          arr.push({ key: keyy, value: res.data.data.data[keyy] })
+        }
+        setItems(arr)
+      })
+  }, [])
+
+  const edit = () => {
     setLoading(true)
     const resultObject: any = {
       data: {},
@@ -28,7 +42,7 @@ const AddObjects = () => {
     }
     axios
       .post(
-        `http://localhost:8200/v1/secret/data/${name}`,
+        `http://localhost:8200/v1/secret/data/${selectedItem}`,
         JSON.stringify(resultObject),
         {
           headers: {
@@ -38,9 +52,7 @@ const AddObjects = () => {
         }
       )
       .then(() => {
-        sentItems([{ key: "", value: "" }])
-        setName("")
-        refresh()
+        selectItem("")
       })
       .catch((err) => {
         setError(err)
@@ -51,26 +63,16 @@ const AddObjects = () => {
   }
   return (
     <div
-      onClick={(event) => setOpenAddSecret(false)}
+      onClick={(event) => selectItem("")}
       className="w-screen z-30 select-none backdrop-blur-sm flex justify-center items-center fixed top-0 bottom-0"
     >
       <div
         onClick={(event) => {
           event.stopPropagation()
         }}
-        className="bg-slate-900 w-96 p-10 flex flex-col items-center text-white rounded-2xl"
+        className="w-96 p-10 flex flex-col items-center text-white rounded-2xl bg-slate-900"
       >
-        <h1 className="text-3xl mb-10">Add Object</h1>
-        <Input
-          onChange={(str) => {
-            if (typeof str === "string") setName(str)
-          }}
-          value={name}
-          name="objectName"
-          label="Object Name"
-          placeholder="like Saeed"
-          className=""
-        />
+        <h1 className="text-3xl mb-10">{selectedItem}</h1>
         <div
           id="itemContainer"
           className="flex flex-col overflow-auto h-80"
@@ -121,13 +123,13 @@ const AddObjects = () => {
         ) : (
           <div className="flex mt-10">
             <button
-              onClick={done}
+              onClick={edit}
               className="rounded-xl hover:bg-slate-600 transition-colors duration-300 border border-white px-2 py-1 w-28"
             >
-              Done
+              Edit
             </button>
             <button
-              onClick={(event) => setOpenAddSecret(false)}
+              onClick={(event) => selectItem("")}
               className="ml-5 hover:bg-slate-600 transition-colors duration-300 rounded-xl border border-white px-2 py-1 w-28"
             >
               Cancel
@@ -139,4 +141,4 @@ const AddObjects = () => {
   )
 }
 
-export default AddObjects
+export default EditObject
