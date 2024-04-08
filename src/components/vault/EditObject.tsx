@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import useVault from "../../stores/vault"
-import axios from "axios"
 import Input from "../Input"
+import { EditVaultObject, GetKeyValues } from "../../repository/vault"
 
 const EditObject = () => {
   const {
@@ -13,53 +13,44 @@ const EditObject = () => {
     editItems,
     deleteItem,
   } = useVault()
+  // error state
   const [error, setError] = useState("")
+  // loading state
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const arr: { key: string; value: string }[] = []
-    axios
-      .get(`http://localhost:8200/v1/secret/data/${selectedItem}`, {
-        headers: {
-          "x-vault-token": "test-vault",
-        },
-      })
-      .then((res) => {
-        for (const keyy in res.data.data.data) {
-          arr.push({ key: keyy, value: res.data.data.data[keyy] })
+    GetKeyValues(
+      selectedItem,
+      (res) => {
+        for (const keyy in res) {
+          arr.push({ key: keyy, value: res[keyy] })
         }
         setItems(arr)
-      })
+      },
+      (err) => console.log(err)
+    )
   }, [])
 
+  /**
+   * this function edit vault object
+   */
   const edit = () => {
     setLoading(true)
-    const resultObject: any = {
-      data: {},
-    }
-    for (const item of items) {
-      if (item.key !== "") resultObject.data[item.key] = item.value
-    }
-    axios
-      .post(
-        `http://localhost:8200/v1/secret/data/${selectedItem}`,
-        JSON.stringify(resultObject),
-        {
-          headers: {
-            "x-vault-token": "test-vault",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then(() => {
+    EditVaultObject(
+      items,
+      selectedItem,
+      () => {
+        setItems([{ key: "", value: "" }])
         selectItem("")
-      })
-      .catch((err) => {
-        setError(err)
-      })
-      .finally(() => {
+      },
+      (err) => {
+        setError(err.message)
+      },
+      () => {
         setLoading(false)
-      })
+      }
+    )
   }
   return (
     <div

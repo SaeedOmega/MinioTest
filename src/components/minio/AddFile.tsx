@@ -1,16 +1,22 @@
 import { useState } from "react"
 import useStore from "../../stores/store"
-import mc from "../../utils/mc"
 import { Buffer } from "buffer"
 import useMinio from "../../stores/minio"
+import { AddObjectToBucket } from "../../repository/mc"
 
 const AddFile = () => {
   const { refresh } = useStore()
-  const { setOpenAddBucket } = useMinio()
+  const { setOpenAddFile: setOpenAddBucket } = useMinio()
+  // selected file for upload
   const [file, setFile] = useState<File | null>()
+  // loading state
   const [loading, setLoading] = useState(false)
+  // error state
   const [error, setError] = useState<string | null>(null)
 
+  /**
+   * this function upload selected file to minio
+   */
   const uploadObj = async () => {
     const fileBuffer = new FileReader()
     if (file) {
@@ -19,15 +25,18 @@ const AddFile = () => {
 
       fileBuffer.onload = async function () {
         const buf = Buffer.from(await file.arrayBuffer())
-        await mc.putObject("test", file.name, buf, function (err, etag) {
-          if (err) {
-            setError(err.message)
-            return
+        await AddObjectToBucket(
+          file.name,
+          buf,
+          () => {
+            setLoading(false)
+            setOpenAddBucket(false)
+            refresh()
+          },
+          (err) => {
+            setError(err)
           }
-          setLoading(false)
-          setOpenAddBucket(false)
-          refresh()
-        })
+        )
       }
 
       fileBuffer.onerror = function (error) {

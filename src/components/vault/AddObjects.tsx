@@ -1,8 +1,8 @@
 import { useState } from "react"
 import useVault from "../../stores/vault"
 import Input from "../Input"
-import axios from "axios"
 import useStore from "../../stores/store"
+import { AddObject } from "../../repository/vault"
 
 const AddObjects = () => {
   const {
@@ -14,44 +14,37 @@ const AddObjects = () => {
     setItems: sentItems,
   } = useVault()
   const { refresh } = useStore()
+  // for input name
   const [name, setName] = useState<string>("")
-  const [error, setError] = useState("")
+  // error state
+  const [error, setError] = useState<Error>()
+  // loading state
   const [loading, setLoading] = useState(false)
 
+  /**
+   * this function sent object to save in vault
+   */
   const done = () => {
     setLoading(true)
-    const resultObject: any = {
-      data: {},
-    }
-    for (const item of items) {
-      if (item.key !== "") resultObject.data[item.key] = item.value
-    }
-    axios
-      .post(
-        `http://localhost:8200/v1/secret/data/${name}`,
-        JSON.stringify(resultObject),
-        {
-          headers: {
-            "x-vault-token": "test-vault",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then(() => {
+    AddObject(
+      items,
+      name,
+      () => {
         sentItems([{ key: "", value: "" }])
         setName("")
         refresh()
-      })
-      .catch((err) => {
+      },
+      (err) => {
         setError(err)
-      })
-      .finally(() => {
+      },
+      () => {
         setLoading(false)
-      })
+      }
+    )
   }
   return (
     <div
-      onClick={(event) => setOpenAddSecret(false)}
+      onClick={() => setOpenAddSecret(false)}
       className="w-screen z-30 select-none backdrop-blur-sm flex justify-center items-center fixed top-0 bottom-0"
     >
       <div
@@ -112,7 +105,7 @@ const AddObjects = () => {
         </button>
         {error && (
           <div className="rounded-xl px-2 py-1 mb-5">
-            {error}
+            {error.message}
             <br /> Try Again!
           </div>
         )}
@@ -127,7 +120,7 @@ const AddObjects = () => {
               Done
             </button>
             <button
-              onClick={(event) => setOpenAddSecret(false)}
+              onClick={() => setOpenAddSecret(false)}
               className="ml-5 hover:bg-slate-600 transition-colors duration-300 rounded-xl border border-white px-2 py-1 w-28"
             >
               Cancel

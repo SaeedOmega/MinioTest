@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react"
 import useStore from "../../stores/store"
-import axios from "axios"
 import useVault from "../../stores/vault"
+import { ListVaultSecrets } from "../../repository/vault"
 
 const ListSecrets = () => {
+  // vault objects for list
   const [objects, setObjects] = useState<string[]>([])
-  const { refresh, refreshValue } = useStore()
+  const { refreshValue } = useStore()
   const { selectItem } = useVault()
   useEffect(() => {
-    axios({
-      headers: {
-        "x-vault-token": "test-vault",
+    ListVaultSecrets(
+      (res: any) => {
+        setObjects(res.data.data.keys)
       },
-      baseURL: "http://localhost:8200/v1/secret/metadata/",
-      method: "LIST",
-    }).then((res: any) => {
-      setObjects(res.data.data.keys)
-    })
+      (err) => {
+        console.log(err)
+      }
+    )
   }, [refreshValue])
 
   return (

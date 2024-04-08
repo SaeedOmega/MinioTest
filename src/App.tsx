@@ -10,7 +10,7 @@ import EditObject from "./components/vault/EditObject"
 
 const App = () => {
   const { setPage, wichPage } = useStore()
-  const { openAddBucket } = useMinio()
+  const { openAddFile: openAddBucket } = useMinio()
   const { openAddSecret, selectedItem } = useVault()
   return (
     <>

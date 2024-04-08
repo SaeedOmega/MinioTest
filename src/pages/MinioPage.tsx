@@ -1,26 +1,12 @@
 import { useEffect } from "react"
-import AddFile from "../components/minio/AddFile"
 import ListBuckets from "../components/minio/ListFiless"
-import useStore from "../stores/store"
-import mc from "../utils/mc"
 import useMinio from "../stores/minio"
+import { ExistBucket } from "../repository/mc"
 
 function MinioPage() {
-  const { setOpenAddBucket, openAddBucket } = useMinio()
+  const { setOpenAddFile: setOpenAddBucket } = useMinio()
   useEffect(() => {
-    mc.bucketExists("test", function (err, exists) {
-      if (err) {
-        return console.log(err)
-      }
-      if (!exists) {
-        mc.makeBucket("test", "us-east-1", function (err) {
-          if (err) return console.log("Error creating bucket.", err)
-          console.log('Bucket created successfully in "us-east-1".')
-          location.reload()
-        })
-      }
-      return console.log("Bucket exists.")
-    })
+    ExistBucket()
   }, [])
 
   return (

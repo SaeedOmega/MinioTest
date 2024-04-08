@@ -1,10 +1,27 @@
 type Props = {
+  /**
+   * value of input
+   */
   value: string | { key: string; value: string }
+  /**
+   * name of input for set id
+   */
   name: string
+  /**
+   * a string for show as label of input
+   */
   label: string
+  /**
+   * a string for show placeholder
+   */
   placeholder?: string
+  // style for component
   className?: string
+  /**
+   * count of item for uniqe id
+   */
   indexItem?: number
+  // a function for onchange inputs
   onChange: (event: string | { key?: string; value?: string }) => void
 }
 
