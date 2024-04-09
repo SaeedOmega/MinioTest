@@ -3,6 +3,8 @@ import useStore from "../../stores/store"
 import { Buffer } from "buffer"
 import useMinio from "../../stores/minio"
 import { AddObjectToBucket } from "../../repository/mc"
+import { Button, Typography } from "@mui/material"
+import { LoadingButton } from "@mui/lab"
 
 const AddFile = () => {
   const { refresh } = useStore()
@@ -56,7 +58,12 @@ const AddFile = () => {
         }}
         className="bg-slate-900 p-10 flex flex-col items-center text-white rounded-2xl"
       >
-        <h1 className="text-3xl mb-10">Add File</h1>
+        <Typography
+          variant="h4"
+          className="!mb-10"
+        >
+          Add File
+        </Typography>{" "}
         <input
           type="file"
           className="mb-10"
@@ -70,24 +77,50 @@ const AddFile = () => {
             <br /> Try Again!
           </div>
         )}
-        {loading ? (
-          <div className="rounded-xl px-2 py-1">Loading...</div>
-        ) : (
-          <div className="flex">
-            <button
+        {
+          <div className="flex w-full justify-between">
+            <LoadingButton
+              loading={loading}
+              loadingPosition="start"
+              variant="outlined"
               onClick={uploadObj}
-              className="rounded-xl hover:bg-slate-600 transition-colors duration-300 border border-white px-2 py-1 w-28"
+              className="w-[45%]"
+              sx={{
+                color: "white",
+                borderColor: "white",
+                borderRadius: "8px",
+                "&:hover": {
+                  backgroundColor: "#94a3b8",
+                  color: "#1e293b",
+                  borderColor: "#94a3b8",
+                },
+                "&.MuiLoadingButton-loading": {
+                  color: "#94a3b8",
+                  borderColor: "#94a3b8",
+                },
+              }}
             >
               Done
-            </button>
-            <button
-              onClick={(event) => setOpenAddBucket(false)}
-              className="ml-5 hover:bg-slate-600 transition-colors duration-300 rounded-xl border border-white px-2 py-1 w-28"
+            </LoadingButton>
+            <Button
+              variant="outlined"
+              onClick={() => setOpenAddBucket(false)}
+              className="w-[45%]"
+              sx={{
+                color: "white",
+                borderColor: "white",
+                borderRadius: "8px",
+                "&:hover": {
+                  backgroundColor: "#94a3b8",
+                  color: "#1e293b",
+                  borderColor: "#94a3b8",
+                },
+              }}
             >
               Cancel
-            </button>
+            </Button>
           </div>
-        )}
+        }
       </div>
     </div>
   )

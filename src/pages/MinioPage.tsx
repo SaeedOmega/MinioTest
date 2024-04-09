@@ -24,9 +24,7 @@ function MinioPage() {
             + Add a File
           </h2>
         </div>
-        <div className="mt-5">
-          <ListBuckets />
-        </div>
+        <ListBuckets />
       </div>
     </>
   )

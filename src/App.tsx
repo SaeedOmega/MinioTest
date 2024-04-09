@@ -8,11 +8,13 @@ import useVault from "./stores/vault"
 import AddObjects from "./components/vault/AddObjects"
 import EditObject from "./components/vault/EditObject"
 import Error from "./components/Error"
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material"
 
 const App = () => {
   const { setPage, wichPage, errorMessage } = useStore()
   const { openAddFile: openAddBucket } = useMinio()
   const { openAddSecret, selectedItem } = useVault()
+
   return (
     <>
       {openAddBucket && <AddFile />}

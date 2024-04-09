@@ -1,12 +1,10 @@
+import { Button, TextField, styled } from "@mui/material"
+
 type Props = {
   /**
    * value of input
    */
   value: string | { key: string; value: string }
-  /**
-   * name of input for set id
-   */
-  name?: string
   /**
    * a string for show as label of input
    */
@@ -21,73 +19,97 @@ type Props = {
    * count of item for uniqe id
    */
   indexItem?: number
-  // a function for onchange inputs
+  /**
+   * a function for onchange inputs
+   * */
   onChange: (event: string | { key?: string; value?: string }) => void
+  /**
+   * a function for delete action
+   */
+  deleteFunc?: () => void
 }
 
+const CssTextField = styled(TextField)({
+  "& label": {
+    color: "#e2e8f0",
+  },
+  "& label.Mui-focused": {
+    color: "#e2e8f0",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#e2e8f0",
+  },
+  "& .MuiInput": {
+    color: "white",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderRadius: "12px",
+      borderColor: "#e2e8f0",
+    },
+    "& input": {
+      color: "white",
+    },
+    "&:hover fieldset": {
+      borderColor: "#e2e8f0",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#e2e8f0",
+    },
+  },
+})
+
 const Input = ({
-  name,
   label,
   placeholder,
   className,
   indexItem: item,
   onChange,
   value,
+  deleteFunc,
 }: Props) => {
   return (
     <>
       {typeof value === "string" && (
-        <div className={`${className} flex w-[96.5%] bg-slate-900 flex-col`}>
-          <label
-            htmlFor={name}
-            className="bg-slate-900 relative bottom-[-10px] px-1 left-2 w-fit"
-          >
-            {label} :
-          </label>
-          <input
-            value={value}
-            onChange={(event) => onChange(event.target.value)}
-            type="text"
-            id={name}
-            placeholder={placeholder}
-            className="bg-slate-900 placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
-          />
-        </div>
+        <CssTextField
+          fullWidth
+          value={value}
+          placeholder={placeholder}
+          label={label}
+          onChange={(event) => onChange(event.target.value)}
+          sx={{ color: "white" }}
+        />
       )}
       {typeof value !== "string" && (
-        <div className={`${className} flex justify-between w-60`}>
-          <div className="flex basis-[48%] bg-slate-900 flex-col">
-            <label
-              htmlFor={`key${item}`}
-              className="bg-slate-900 relative bottom-[-10px] px-1 left-2 w-fit"
-            >
-              Key :
-            </label>
-            <input
-              value={value.key}
-              onChange={(event) => onChange({ key: event.target.value })}
-              type="text"
-              id={`key${item}`}
-              placeholder="key"
-              className="bg-slate-900 w-full placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
-            />
-          </div>
-          <div className="basis-[48%] flex bg-slate-900 flex-col">
-            <label
-              htmlFor={`value${item}`}
-              className="bg-slate-900 relative bottom-[-10px] px-1 left-2 w-fit"
-            >
-              Value :
-            </label>
-            <input
-              value={value.value}
-              onChange={(event) => onChange({ value: event.target.value })}
-              type="text"
-              id={`value${item}`}
-              placeholder="value"
-              className="bg-slate-900 w-full placeholder:opacity-70 placeholder:text-[14px] h-10 py-4 px-3 outline-none border-white border rounded-md"
-            />
-          </div>
+        <div className={`${className} flex mt-5 justify-between w-full`}>
+          <CssTextField
+            label="Key :"
+            value={value.key}
+            placeholder="key"
+            onChange={(event) => onChange({ key: event.target.value })}
+            className="!w-28"
+          />
+          <CssTextField
+            className="!w-28"
+            label="Value :"
+            value={value.value}
+            placeholder="value"
+            onChange={(event) => onChange({ value: event.target.value })}
+            sx={{ marginLeft: 1 }}
+          />
+          <Button
+            onClick={deleteFunc}
+            className="pr-2 ml-2"
+            sx={{
+              color: "white",
+              "&:hover ": {
+                backgroundColor: "#0f172a",
+                color: "#475569",
+              },
+            }}
+          >
+            delete
+          </Button>
         </div>
       )}
     </>
