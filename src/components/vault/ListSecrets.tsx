@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import useStore from "../../stores/store";
 import useVault from "../../stores/vault";
 import { DeleteVault, ListVaultSecrets } from "../../repository/vault";
@@ -30,7 +30,7 @@ const ListSecrets = () => {
   return (
     <>
       <List>
-        <ListItem>
+        <ListItem key={999}>
           <ListItemText
             className="font-medium p-4 pb-3 text-slate-500"
             primary="Name"
@@ -38,6 +38,7 @@ const ListSecrets = () => {
         </ListItem>
         {location.pathname.split("/").length > 2 && (
           <ListItem
+            key={99}
             onClick={() => {
               navigate(-1);
             }}
@@ -49,14 +50,11 @@ const ListSecrets = () => {
             />
           </ListItem>
         )}
-        {objects?.map((b) => {
+        {objects?.map((b, index) => {
           return (
-            <>
+            <Fragment key={index}>
               {b[b.length - 1] === "/" ? (
-                <ListItem
-                  key={b}
-                  className="bg-slate-800 transition-colors duration-250 hover:bg-slate-300 cursor-pointer mb-0.5 rounded-xl !p-0 text-slate-400 hover:!text-slate-800"
-                >
+                <ListItem className="bg-slate-800 transition-colors duration-250 hover:bg-slate-300 cursor-pointer mb-0.5 rounded-xl !p-0 text-slate-400 hover:!text-slate-800">
                   <Link
                     className="w-full h-full"
                     to={location.pathname + "/" + b.replace("/", "")}
@@ -72,7 +70,6 @@ const ListSecrets = () => {
                   onClick={() => {
                     if (b[b.length - 1] !== "/") selectItem(b);
                   }}
-                  key={b}
                   className="bg-slate-800 transition-colors duration-250 hover:bg-slate-300 cursor-pointer mb-0.5 rounded-xl !p-0 text-slate-400 hover:!text-slate-800"
                 >
                   <ListItemText
@@ -104,7 +101,7 @@ const ListSecrets = () => {
                   </Button>
                 </ListItem>
               )}
-            </>
+            </Fragment>
           );
         })}
       </List>
