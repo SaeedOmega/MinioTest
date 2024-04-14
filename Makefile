@@ -36,4 +36,4 @@ install-minio:
 install-ui:
 	npm i
 
-install: install-minio install-ui
+install: install-minio install-ui install-vault install-nats
