@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 /**
  * Get Key/Values from vault object
@@ -14,9 +14,9 @@ export const Get = async (name: string) => {
         },
       })
       .then((res) => resolve(res.data.data.data))
-      .catch((err) => reject(err))
-  })
-}
+      .catch((err) => reject(err));
+  });
+};
 
 /**
  *  POST to vault
@@ -38,9 +38,9 @@ export const Post = async (resultObject: {}, name: string) => {
         }
       )
       .then((res) => resolve(res))
-      .catch((err) => reject(err))
-  })
-}
+      .catch((err) => reject(err));
+  });
+};
 
 /**
  *  PUT to vault
@@ -63,9 +63,9 @@ export const Put = async (resultObject: {}, name: string) => {
         }
       )
       .then((res) => resolve(res))
-      .catch((err) => reject(err))
-  })
-}
+      .catch((err) => reject(err));
+  });
+};
 
 /**
  * LIST secrets in vault
@@ -80,9 +80,9 @@ export const List = async (directoryName: string): Promise<string[]> => {
       method: "LIST",
     })
       .then((res) => resolve(res.data.data.keys))
-      .catch((err) => reject(err))
-  })
-}
+      .catch((err) => reject(err));
+  });
+};
 
 /**
  * DELETE object in vault
@@ -96,6 +96,6 @@ export const Delete = async (directoryName: string) => {
         },
       })
       .then((res) => resolve(res))
-      .catch((err) => reject(err))
-  })
-}
+      .catch((err) => reject(err));
+  });
+};

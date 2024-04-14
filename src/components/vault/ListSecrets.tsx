@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react"
-import useStore from "../../stores/store"
-import useVault from "../../stores/vault"
-import { DeleteVault, ListVaultSecrets } from "../../repository/vault"
-import { Link, useNavigate } from "react-router-dom"
-import { Button, List, ListItem, ListItemText } from "@mui/material"
+import { useEffect, useState } from "react";
+import useStore from "../../stores/store";
+import useVault from "../../stores/vault";
+import { DeleteVault, ListVaultSecrets } from "../../repository/vault";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, List, ListItem, ListItemText } from "@mui/material";
 
 const ListSecrets = () => {
   // vault objects for list
-  const [objects, setObjects] = useState<string[]>([])
-  const { refreshValue, refresh, setErrorMessage } = useStore()
-  const { selectItem, refreshPath } = useVault()
-  const navigate = useNavigate()
+  const [objects, setObjects] = useState<string[]>([]);
+  const { refreshValue, refresh, setErrorMessage } = useStore();
+  const { selectItem, refreshPath } = useVault();
+  const navigate = useNavigate();
   useEffect(() => {
-    const directory = location.pathname.replace("/vault", "")
+    const directory = location.pathname.replace("/vault", "");
     ListVaultSecrets(
       directory,
       (res: any) => {
-        setObjects(res)
+        setObjects(res);
       },
       (err) => {
-        setErrorMessage(err.message)
+        const path = location.pathname.replace("/", "").split("/");
+        if (!err.message.includes("404") || path.length !== 1)
+          setErrorMessage(err.message);
       }
-    )
-    refreshPath()
-  }, [refreshValue, location.pathname])
+    );
+    refreshPath();
+  }, [refreshValue, location.pathname]);
 
   return (
     <>
@@ -37,7 +39,7 @@ const ListSecrets = () => {
         {location.pathname.split("/").length > 2 && (
           <ListItem
             onClick={() => {
-              navigate(-1)
+              navigate(-1);
             }}
             className="bg-slate-800 transition-colors duration-250 hover:bg-slate-300 cursor-pointer mb-0.5 rounded-xl !p-0 text-slate-400 hover:!text-slate-800"
           >
@@ -68,7 +70,7 @@ const ListSecrets = () => {
               ) : (
                 <ListItem
                   onClick={() => {
-                    if (b[b.length - 1] !== "/") selectItem(b)
+                    if (b[b.length - 1] !== "/") selectItem(b);
                   }}
                   key={b}
                   className="bg-slate-800 transition-colors duration-250 hover:bg-slate-300 cursor-pointer mb-0.5 rounded-xl !p-0 text-slate-400 hover:!text-slate-800"
@@ -79,16 +81,16 @@ const ListSecrets = () => {
                   />
                   <Button
                     onClick={(event) => {
-                      event.stopPropagation()
+                      event.stopPropagation();
                       DeleteVault(
                         b,
                         () => {
-                          refresh()
+                          refresh();
                         },
                         (err) => {
-                          setErrorMessage(err.message)
+                          setErrorMessage(err.message);
                         }
-                      )
+                      );
                     }}
                     className="pr-2 ml-2"
                     sx={{
@@ -103,11 +105,11 @@ const ListSecrets = () => {
                 </ListItem>
               )}
             </>
-          )
+          );
         })}
       </List>
     </>
-  )
-}
+  );
+};
 
-export default ListSecrets
+export default ListSecrets;
