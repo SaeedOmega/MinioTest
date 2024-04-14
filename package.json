@@ -19,6 +19,7 @@
     "axios": "^1.6.8",
     "js-file-download": "^0.4.12",
     "minio": "^7.1.1",
+    "nats.ws": "^1.23.0",
     "node-vault": "^0.10.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
