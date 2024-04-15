@@ -34,7 +34,11 @@ type Store = {
 const useStore = create<Store>()((set) => ({
   refreshValue: 0,
   errorMessage: "",
-  wichPage: location.pathname.includes("vault") ? "vault" : "minio",
+  wichPage: location.pathname.includes("vault")
+    ? "vault"
+    : location.pathname.includes("minio")
+    ? "minio"
+    : "nats",
   setErrorMessage: (state) => set({ errorMessage: state }),
   setPage: (page) => set(() => ({ wichPage: page })),
   refresh: () => set((state) => ({ refreshValue: state.refreshValue + 1 })),
