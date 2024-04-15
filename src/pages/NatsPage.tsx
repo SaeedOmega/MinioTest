@@ -23,7 +23,6 @@ const NatsPage = () => {
           messageContainer.current!.innerHTML += `<div>${sc.decode(
             msg.data
           )}</div>`;
-          console.log(sc.decode(msg.data));
         },
       });
     })();
