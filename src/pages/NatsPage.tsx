@@ -1,10 +1,10 @@
 import { TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import {
-  NatsCloseSocket,
   NatsPublish,
   NatsSubscribe,
 } from "../repository/nats";
+import { useMount, useUnmount } from "@reactuses/core";
 
 const NatsPage = () => {
   const messageContainer = useRef<HTMLDivElement>(null);
@@ -18,7 +18,6 @@ const NatsPage = () => {
 
   useEffect(() => {
     NatsSubscribe(messageContainer.current!);
-    return NatsCloseSocket;
   }, []);
   return (
     <div className="h-[95%]">

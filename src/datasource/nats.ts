@@ -3,7 +3,7 @@ import { Payload, SubscriptionOptions, connect } from "nats.ws";
 /**
  * a socket to nats
  */
-export const NatsWs = await connect({ servers: ["ws://localhost:8080"] });
+const NatsWs = await connect({ servers: ["ws://localhost:8080"] });
 
 /**
  * a function for subscribe to nats server subject
