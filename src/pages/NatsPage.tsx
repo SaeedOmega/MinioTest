@@ -11,7 +11,6 @@ const NatsPage = () => {
   const sendMessage = (e: any) => {
     e.preventDefault();
     nats?.publish(">", message);
-    messageContainer.current!.innerHTML += `<div class="self-end w-fit">${message}</div>`;
     setMessage("");
   };
 
@@ -19,7 +18,7 @@ const NatsPage = () => {
     (async () => {
       const nc = await connect({ servers: ["ws://localhost:8080"] });
       setNats(nc);
-      nats?.subscribe(">", {
+      nc.subscribe(">", {
         callback: async (err, msg) => {
           messageContainer.current!.innerHTML += `<div>${sc.decode(
             msg.data
