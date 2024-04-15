@@ -1,5 +1,5 @@
-import { Payload, StringCodec, SubscriptionOptions } from "nats.ws";
-import { DrainNats, NatsPub, NatsSub, NatsWs } from "../datasource/nats";
+import { Payload, StringCodec } from "nats.ws";
+import { DrainNats, NatsPub, NatsSub } from "../datasource/nats";
 
 const sc = StringCodec();
 

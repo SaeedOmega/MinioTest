@@ -1,4 +1,4 @@
-import { Payload, PublishOptions, SubscriptionOptions, connect } from "nats.ws";
+import { Payload, SubscriptionOptions, connect } from "nats.ws";
 
 /**
  * a socket to nats
